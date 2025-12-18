@@ -1,80 +1,122 @@
-### dataset:
-Time-series signal features extracted from human motion
-These columns are NOT raw sensor readings. They are statistical features extracted from signals, for example:
-mean() → average signal value
-std() → how much signal varies
-energy() → signal power
-entropy() → randomness
-correlation() → relationship between axes
+#### Human Activity Recognition (HAR) System
 
-Example: tBodyAcc-mean()-X
-Means:
-t → time domain
-BodyAcc → body acceleration signal
-mean() → average
-X → X-axis
-So this is: Average value of the signal along X direction
+### Project Overview
 
-#### Problem Statement -- Human Activity Recognition (HAR) aims to classify physical activities using smartphone sensor data.
+Human Activity Recognition (HAR) aims to classify physical activities performed by a person using smartphone sensor data. This project focuses on sensor-based HAR using time-series features extracted from accelerometer and gyroscope signals.
+Unlike raw signal-based approaches, this dataset contains statistical features derived from sensor signals, making it suitable for classical machine learning models.
 
-#### Dataset
+### Problem Statement
 
-Source: Smartphone accelerometer & gyroscope
-Train samples: 7,352
-Test samples: 2,947
-Features: 561 sensor-based features
-Classes: 6 Activities (Walking, Walking Upstairs, Walking Downstairs, Sitting, Standing, Laying)
+The goal of this project is to accurately classify six human activities using preprocessed smartphone sensor data while ensuring:
 
-#### Feature engineering categories
+- Robust generalization across subjects
+- High performance on high-dimensional feature space
+- Resistance to sensor noise and feature correlation
 
-Label encoding (target)
-Subject-aware separation
-Scaling / normalization
-Feature grouping (time vs frequency)
-Statistical aggregation (energy groups)
-Correlation-based pruning
-Variance thresholding
-Dimensionality reduction (PCA – optional, controlled)
+### Dataset Description
 
-Stage	||   Result
-Raw features	|| 561
-Engineered	|| 574
-After variance filter ||	570
-After correlation pruning	|| 253
-Final selected	|| 150 
+🔹 Source
 
+- Smartphone accelerometer and gyroscope
+- Signals collected from wearable sensors
 
-# Tree ensembles dominate HAR due to:
-Non-linear sensor patterns
-High feature interactions
+🔹 Dataset Size
+Training || 7,352
+Testing || 2,947
 
-# Extra Trees outperforms Random Forest because:
-More randomness → lower variance
-Better generalization on unseen subjects
-Handle high-dimensional correlated sensor data
-Capture non-linear temporal–frequency interactions
-Are robust to noise from wearable sensors
-Do not overfit like deep trees in Random Forest
+🔹 Target Classes (6 Activities)
 
+- WALKING
+- WALKING_UPSTAIRS
+- WALKING_DOWNSTAIRS
+- SITTING
+- STANDING
+- LAYING
 
-#### Preprocessing
-Removed subject column
-Label encoded activity classes
-No missing values
-Features already normalized by dataset creators
+### Feature Description
 
-#### Model Used
-Random Forest Classifier
-Handles high-dimensional data well
-Robust to noise
-Provides feature importance
+🔹 Feature Count
 
-#### Results
+- Total features: 561
+- These are NOT raw sensor readings
+- Features are statistical summaries extracted from time-series signals
 
+🔹 Feature Types
+Each feature name encodes detailed information:
+
+Example Feature: tBodyAcc-mean()-X
+t- Time-domain signal
+BodyAcc - Body acceleration
+mean() - Average signal value
+X - X-axis
+
+- Interpretation: Average body acceleration along the X-axis in the time domain
+
+### Feature Engineering Categories
+
+The following feature engineering techniques were applied:
+
+- Label encoding of activity classes
+- Subject-aware separation (subject column removed)
+- Scaling / normalization
+- Feature grouping (time-domain vs frequency-domain)
+- Statistical aggregation (energy-based groups)
+- Correlation-based pruning
+- Variance thresholding
+- Dimensionality reduction (PCA – optional & controlled)
+
+### Feature Reduction Pipeline
+
+Stage -- Number of Features
+Raw features: 561
+After engineering: 574
+After variance filtering: 570
+After correlation pruning: 253
+Final selected features: 150
+
+### Preprocessing Steps
+
+- Removed subject identifier
+- Encoded activity labels numerically
+- No missing values in the dataset
+- Features were already normalized by dataset creators
+- Applied feature selection to reduce redundancy and multicollinearity
+
+### Model Selection Rationale
+
+🔹 Why Tree-Based Models?
+Tree ensemble models dominate HAR tasks due to:
+
+- Strong handling of non-linear sensor patterns
+- Ability to model complex feature interactions
+- Robustness to noise in wearable sensor data
+- Effective learning from high-dimensional feature spaces
+
+🔹 Model Used
+
+- Random Forest Classifier
+- Extra Trees evaluated and showed strong performance due to increased randomness and reduced variance.
+
+### Results
+
+🔹 Overall Performance
 Accuracy: 92.9%
-Strong performance across all activities
-Best performance on LAYING
-Slight confusion between SITTING & STANDING
 
+🔹 Observations
 
+- Strong performance across all activity classes
+- Best classification accuracy for LAYING
+- Minor confusion observed between: SITTING & STANDING
+  This confusion is expected due to similar postural sensor patterns.
 
+### Key Strengths of the System
+
+- High generalization across unseen subjects
+- Robust to correlated and redundant features
+- Efficient feature reduction without significant performance loss
+- Well-suited for real-world wearable sensor applications
+
+### Conclusion
+
+This project demonstrates that classical machine learning models, when combined with careful feature engineering and selection, can achieve high accuracy in Human Activity Recognition tasks without requiring deep learning architectures.
+The system is reliable, interpretable, and suitable for deployment in resource-constrained environments.
